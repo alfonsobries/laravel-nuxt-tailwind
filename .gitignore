@@ -11,5 +11,6 @@ npm-debug.log
 yarn-error.log
 .env
 .nuxt
+.php_cs.cache
 /dist
 /public/_nuxt
