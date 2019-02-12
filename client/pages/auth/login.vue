@@ -72,20 +72,26 @@ export default {
 
   methods: {
     async login () {
+      try {
       // Submit the form.
-      const { data } = await this.form.post('/login')
+        const { data } = await this.form.post('/login')
 
-      // Save the token.
-      this.$store.dispatch('auth/saveToken', {
-        token: data.token,
-        remember: this.remember
-      })
+        // Save the token.
+        this.$store.dispatch('auth/saveToken', {
+          token: data.token,
+          remember: this.remember
+        })
 
-      // Fetch the user.
-      await this.$store.dispatch('auth/fetchUser')
+        // Fetch the user.
+        await this.$store.dispatch('auth/fetchUser')
 
-      // Redirect home.
-      this.$router.push({ name: 'home' })
+        // Redirect home.
+        this.$router.push({ name: 'home' })
+      } catch (e) {
+        if (e.response.status !== 422) {
+          throw e
+        }
+      }
     }
   }
 }

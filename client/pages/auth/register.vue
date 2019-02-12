@@ -79,20 +79,26 @@ export default {
 
   methods: {
     async register () {
+      try {
       // Register the user.
-      const { data } = await this.form.post('/register')
+        const { data } = await this.form.post('/register')
 
-      // Log in the user.
-      const { data: { token } } = await this.form.post('/login')
+        // Log in the user.
+        const { data: { token } } = await this.form.post('/login')
 
-      // Save the token.
-      this.$store.dispatch('auth/saveToken', { token })
+        // Save the token.
+        this.$store.dispatch('auth/saveToken', { token })
 
-      // Update the user.
-      await this.$store.dispatch('auth/updateUser', { user: data })
+        // Update the user.
+        await this.$store.dispatch('auth/updateUser', { user: data })
 
-      // Redirect home.
-      this.$router.push({ name: 'home' })
+        // Redirect home.
+        this.$router.push({ name: 'home' })
+      } catch (e) {
+        if (e.response.status !== 422) {
+          throw e
+        }
+      }
     }
   }
 }

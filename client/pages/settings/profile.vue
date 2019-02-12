@@ -64,9 +64,10 @@ export default {
 
   methods: {
     async update () {
-      const { data } = await this.form.patch('/settings/profile')
-
-      this.$store.dispatch('auth/updateUser', { user: data })
+      this.form.patch('/settings/profile')
+        .then(({ data }) => {
+          this.$store.dispatch('auth/updateUser', { user: data })
+        })
     }
   }
 }

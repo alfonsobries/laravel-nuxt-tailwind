@@ -66,6 +66,11 @@ module.exports = {
   ],
 
   build: {
-    extractCSS: true
+    extractCSS: true,
+    babel: {
+      'plugins': [
+        'babel-plugin-async-import'
+      ]
+    }
   }
 }

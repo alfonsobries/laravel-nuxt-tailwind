@@ -43,12 +43,13 @@ export default {
   }),
 
   methods: {
-    async send () {
-      const { data } = await this.form.post('/password/email')
+    send () {
+      this.form.post('/password/email')
+        .then(({ data }) => {
+          this.status = data.status
 
-      this.status = data.status
-
-      this.form.reset()
+          this.form.reset()
+        })
     }
   }
 }
