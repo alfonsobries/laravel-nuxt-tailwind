@@ -4,8 +4,9 @@ A Laravel-Nuxt styled with TailwindCSS starter project template.
 
 Inspired in `cretueusebiu/laravel-nuxt`
 
+
 <p align="center">
-<img src="https://i.imgur.com/NHFTsGt.png">
+<img src="https://imgur.com/TGP7Iiu">
 </p>
 
 ## Features
