@@ -14,3 +14,4 @@ yarn-error.log
 .php_cs.cache
 /dist
 /public/_nuxt
+
