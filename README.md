@@ -6,7 +6,7 @@ Inspired in `cretueusebiu/laravel-nuxt`
 
 
 <p align="center">
-<img src="https://imgur.com/TGP7Iiu">
+<img src="https://i.imgur.com/TGP7Iiu.png">
 </p>
 
 ## Features
