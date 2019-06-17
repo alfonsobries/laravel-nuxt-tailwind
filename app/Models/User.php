@@ -9,6 +9,9 @@ use App\Notifications\ResetPassword as ResetPasswordNotification;
 
 class User extends Authenticatable implements JWTSubject
 {
+    const ROLE_ROOT = 'root';
+    const ROLE_ADMIN = 'admin';
+
     use Notifiable;
 
     /**
