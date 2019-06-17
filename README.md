@@ -24,7 +24,7 @@ Inspired in `cretueusebiu/laravel-nuxt`
 
 ## Installation
 
-- `composer create-project --prefer-dist alfonsobries/laravel-nuxt`
+- `git clone git@github.com:alfonsobries/laravel-nuxt-tailwind.git <name-of-your-project>`
 - Edit `.env` to set your database connection details
 - run `php artisan key:generate` and `php artisan jwt:secret`
 - `php artisan migrate`
