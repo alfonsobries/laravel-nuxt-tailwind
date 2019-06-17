@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Models\User;
 use Mockery as m;
 use Tests\TestCase;
 use Laravel\Socialite\Facades\Socialite;
