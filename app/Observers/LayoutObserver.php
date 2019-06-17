@@ -13,10 +13,12 @@ class LayoutObserver
         $layout->table_name = $layout->generateUniqueTableName();
 
         Schema::create($layout->table_name, function (Blueprint $table) {
-            // $table->bigIncrements('id');
-            $table->string('id')->index()->unique();
+            $table->string('id')->unique()->primary();
             $table->unsignedInteger('layout_id')->nullable();
-            $table->integer('row_number');
+            $table->unsignedInteger('created_by_id')->nullable();
+            $table->unsignedInteger('updated_by_id')->nullable();
+            $table->integer('database_row');
+            $table->timestamp('published_at');
             $table->timestamps();
             $table->softDeletes();
 
@@ -24,6 +26,18 @@ class LayoutObserver
                 ->foreign('layout_id')
                 ->references('id')
                 ->on('layouts')
+                ->onDelete('set null');
+
+            $table
+                ->foreign('created_by_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('set null');
+
+            $table
+                ->foreign('updated_by_id')
+                ->references('id')
+                ->on('users')
                 ->onDelete('set null');
         });
     }
