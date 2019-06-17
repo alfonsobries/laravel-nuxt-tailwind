@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToCompany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Sluggable\HasSlug;
@@ -10,7 +11,8 @@ use Spatie\Sluggable\SlugOptions;
 class Provider extends Model
 {
     use SoftDeletes,
-        HasSlug;
+        HasSlug,
+        BelongsToCompany;
 
     protected $fillable = [
         'company_id',
