@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('role')->default(User::ROLE_ADMIN);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
