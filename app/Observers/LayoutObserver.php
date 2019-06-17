@@ -18,7 +18,7 @@ class LayoutObserver
             $table->unsignedInteger('created_by_id')->nullable();
             $table->unsignedInteger('updated_by_id')->nullable();
             $table->integer('database_row');
-            $table->timestamp('published_at');
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

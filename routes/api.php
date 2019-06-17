@@ -30,6 +30,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('providers', 'ProviderController');
     
     Route::resource('layouts', 'LayoutController');
+    
+    Route::resource('columns', 'ColumnController');
 });
 
 Route::group(['middleware' => 'guest:api'], function () {

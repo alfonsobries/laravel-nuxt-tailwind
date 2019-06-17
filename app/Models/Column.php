@@ -1,0 +1,102 @@
+<?php
+
+namespace App\Models;
+
+use App\Traits\BelongsToLayout;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
+
+class Column extends Model
+{
+    use SoftDeletes,
+        HasSlug,
+        BelongsToLayout;
+
+    const TYPE_TEXT = 'text';
+    const TYPE_TEXTAREA = 'textarea';
+    const TYPE_SELECT = 'select';
+    const TYPE_RADIO = 'radio';
+    const TYPE_CHECKBOX = 'checkbox';
+    const TYPE_DATE = 'date';
+    const TYPE_TIME = 'time';
+    const TYPE_DATETIME = 'datetime';
+    const TYPE_FLOAT = 'float';
+    const TYPE_INTEGER = 'integer';
+
+    const ACTION_REPLACE = 'replace';
+    const ACTION_IGNORE = 'ignore';
+    const ACTION_SUM = 'sum';
+    
+    protected $fillable = [
+        'layout_id',
+        'name',
+        'slug',
+        'type',
+        'default',
+        'when_duplicated',
+        'settings',
+        'required',
+        'published',
+    ];
+
+    protected $casts = [
+        'required' => 'boolean',
+        'settings' => 'array',
+    ];
+
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug')
+            ->slugsShouldBeNoLongerThan(60)
+            ->allowDuplicateSlugs();
+    }
+
+    public static function typeOptions()
+    {
+        return collect([
+            self::TYPE_TEXT,
+            self::TYPE_TEXTAREA,
+            self::TYPE_SELECT,
+            self::TYPE_RADIO,
+            self::TYPE_CHECKBOX,
+            self::TYPE_DATE,
+            self::TYPE_TIME,
+            self::TYPE_DATETIME,
+            self::TYPE_FLOAT,
+            self::TYPE_INTEGER,
+        ]);
+    }
+
+    public static function actionOptions()
+    {
+        return collect([
+            self::ACTION_REPLACE,
+            self::ACTION_IGNORE,
+            self::ACTION_SUM,
+        ]);
+    }
+
+    public function setPublishedAttribute($published)
+    {
+        if ($published) {
+            if (!$this->getOriginal('published_at')) {
+                $this->attributes['published_at'] = now();
+            }
+        } else {
+            $this->attributes['published_at'] = null;
+        }
+    }
+
+    public function getPublishedAttribute()
+    {
+        return boolval($this->published_at);
+    }
+
+}
