@@ -36,7 +36,7 @@ class ColumnControllerTest extends TestCase
         $admin = factory(User::class)->state('admin')->create();
         $column = factory(Column::class)->create();
 
-        $request = $this->getValidRequestData();
+        $request = $this->getValidRequestData(['layout_id' => null]);
 
         $response = $this
             ->actingAs($admin)

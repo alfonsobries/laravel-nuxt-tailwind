@@ -28,7 +28,6 @@ class ColumnRequest extends FormRequest
     {
         if ($this->column) {
             return [
-                'layout_id' => 'nullable|numeric|exists:layouts,id',
                 'name' => 'nullable',
                 'slug' => 'nullable|alpha_dash',
                 'type' => 'nullable|in:' . Column::typeOptions()->implode(','),
