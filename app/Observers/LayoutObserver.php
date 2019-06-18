@@ -49,7 +49,7 @@ class LayoutObserver
         }
     }
 
-    public function deleting(Layout $layout)
+    public function forceDeleted(Layout $layout)
     {
         Schema::dropIfExists($layout->table_name);
     }

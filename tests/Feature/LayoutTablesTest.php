@@ -42,6 +42,10 @@ class LayoutTablesTest extends TestCase
 
         $this->assertTrue(Schema::hasTable($layout->table_name));
 
+        $layout->delete();
+
+        $this->assertTrue(Schema::hasTable($layout->table_name));        
+
         $layout->forceDelete();
 
         $this->assertFalse(Schema::hasTable($layout->table_name));        

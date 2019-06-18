@@ -29,15 +29,17 @@ class ColumnObserver
      */
     public function updating(Column $column)
     {
-        Schema::table($column->table_name, function (Blueprint $table) use ($column) {
-            if ($column->getOriginal('slug') !== $column->slug) {
+        if ($column->getOriginal('slug') !== $column->slug) {
+            Schema::table($column->table_name, function (Blueprint $table) use ($column) {
                 $table->renameColumn($column->getOriginal('slug'), $column->slug);
-            }
-        });
+            });
+        }
 
-        Schema::table($column->table_name, function (Blueprint $table) use ($column) {
-            $table->{$column->column_type}($column->slug)->change();
-        });
+        if ($column->type !== $column->getOriginal('type')) {
+            Schema::table($column->table_name, function (Blueprint $table) use ($column) {
+                $table->{$column->column_type}($column->slug)->change();
+            });
+        }
     }
 
     /**
