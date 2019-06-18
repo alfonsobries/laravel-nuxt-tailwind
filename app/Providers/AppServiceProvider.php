@@ -16,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         \App\Models\Layout::observe(\App\Observers\LayoutObserver::class);
+        \App\Models\Column::observe(\App\Observers\ColumnObserver::class);
 
         if ($this->app->runningUnitTests()) {
             Schema::defaultStringLength(191);

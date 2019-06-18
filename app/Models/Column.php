@@ -55,7 +55,8 @@ class Column extends Model
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug')
             ->slugsShouldBeNoLongerThan(60)
-            ->allowDuplicateSlugs();
+            ->allowDuplicateSlugs()
+            ->usingSeparator('_');
     }
 
     public static function typeOptions()
@@ -72,6 +73,28 @@ class Column extends Model
             self::TYPE_FLOAT,
             self::TYPE_INTEGER,
         ]);
+    }
+
+    public function getColumnTypeAttribute()
+    {
+        switch ($this->type) {
+            case self::TYPE_DATE:
+                return 'date';
+            
+            case self::TYPE_DATETIME:
+                return 'dateTime';
+
+            case self::TYPE_TIME:
+                return 'time';
+            
+            case self::TYPE_FLOAT:
+                return 'float';
+
+            case self::TYPE_INTEGER:
+                return 'integer';
+        }
+
+        return 'string';
     }
 
     public static function actionOptions()
@@ -97,6 +120,11 @@ class Column extends Model
     public function getPublishedAttribute()
     {
         return boolval($this->published_at);
+    }
+
+    public function getTableNameAttribute()
+    {
+        return $this->layout->table_name;
     }
 
 }

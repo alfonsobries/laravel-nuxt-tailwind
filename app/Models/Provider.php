@@ -29,6 +29,7 @@ class Provider extends Model
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug')
             ->slugsShouldBeNoLongerThan(10)
-            ->doNotGenerateSlugsOnUpdate();
+            ->doNotGenerateSlugsOnUpdate()
+            ->usingSeparator('_');
     }
 }

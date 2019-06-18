@@ -18,7 +18,7 @@ class CreateColumnsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('layout_id');
             $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->string('type')->default(Column::TYPE_TEXT);
             $table->string('default')->nullable();
             $table->string('when_duplicated')->default(Column::ACTION_REPLACE);

@@ -12,6 +12,6 @@ $factory->define(Layout::class, function (Faker $faker) {
             return factory(Provider::class)->create()->id;
         },
         'name' => $faker->company,
-        'slug' => str_slug($faker->company),
+        'slug' => str_slug($faker->company, '_'),
     ];
 });

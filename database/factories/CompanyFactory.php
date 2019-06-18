@@ -8,6 +8,6 @@ use Faker\Generator as Faker;
 $factory->define(Company::class, function (Faker $faker) {
     return [
         'name' => $faker->company,
-        'slug' => str_slug($faker->company),
+        'slug' => str_slug($faker->company, '_'),
     ];
 });

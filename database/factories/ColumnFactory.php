@@ -12,9 +12,8 @@ $factory->define(Column::class, function (Faker $faker) {
             return factory(Layout::class)->create();
         },
         'name' => $faker->sentence(2),
-        'slug' => str_slug($faker->sentence(2)),
+        'slug' => str_slug($faker->sentence(2), '_'),
         'type' => Column::typeOptions()->random(),
-        'default' => $faker->optional()->sentence(2),
         'when_duplicated' => Column::actionOptions()->random(),
         'required' => $faker->boolean,
         'published_at' => $faker->optional()->dateTime,
