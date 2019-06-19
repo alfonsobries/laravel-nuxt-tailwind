@@ -71,6 +71,17 @@ class Layout extends Model
         return $tableName;
     }
 
+    public function generateForeignKeyPrefix()
+    {
+        return collect(explode('_', $this->table_name))->map(function ($part) {
+            if ($part === 'data') {
+                return $part . '_';
+            }
+
+            return @$part[0];
+        })->implode('');
+    }
+
     public function rules()
     {
         return $this->columns()->get()->mapWithKeys(function ($column) {

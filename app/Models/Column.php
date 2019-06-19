@@ -75,14 +75,44 @@ class Column extends Model
         ]);
     }
 
-    public function getColumnTypeAttribute()
+    public static function casteableTypes($type)
     {
-        switch ($this->type) {
+        switch ($type) {
+            case self::TYPE_DATE:
+                return self::typeOptions()
+                    ->reject(self::TYPE_TIME)
+                    ->reject(self::TYPE_FLOAT)
+                    ->reject(self::TYPE_INTEGER);
+            case self::TYPE_TIME:
+                return self::typeOptions()
+                    ->reject(self::TYPE_DATE)
+                    ->reject(self::TYPE_DATETIME)
+                    ->reject(self::TYPE_FLOAT)
+                    ->reject(self::TYPE_INTEGER);
+            case self::TYPE_DATETIME:
+                return self::typeOptions()
+                    ->reject(self::TYPE_TIME)
+                    ->reject(self::TYPE_FLOAT)
+                    ->reject(self::TYPE_INTEGER);
+            case self::TYPE_FLOAT:
+            case self::TYPE_INTEGER:
+                return self::typeOptions()
+                    ->reject(self::TYPE_DATE)
+                    ->reject(self::TYPE_DATETIME)
+                    ->reject(self::TYPE_TIME);
+        }
+
+        return self::typeOptions();
+    }
+
+    public static function columnType($type, $sql = false)
+    {
+        switch ($type) {
             case self::TYPE_DATE:
                 return 'date';
             
             case self::TYPE_DATETIME:
-                return 'dateTime';
+                return $sql ? 'timestamp' : 'datetime';
 
             case self::TYPE_TIME:
                 return 'time';
@@ -94,7 +124,17 @@ class Column extends Model
                 return 'integer';
         }
 
-        return 'string';
+        return $sql ? 'varchar' : 'string';
+    }
+
+    public function getColumnTypeAttribute()
+    {
+        return self::columnType($this->type);
+    }
+
+    public function getSqlColumnTypeAttribute()
+    {
+        return self::columnType($this->type, true);
     }
 
     public static function actionOptions()

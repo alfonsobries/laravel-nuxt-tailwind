@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Column;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class ColumnObserver
@@ -36,9 +37,14 @@ class ColumnObserver
         }
 
         if ($column->type !== $column->getOriginal('type')) {
-            Schema::table($column->table_name, function (Blueprint $table) use ($column) {
-                $table->{$column->column_type}($column->slug)->change();
-            });
+            if (config('database.default') === 'pgsql') {
+                $sql = "ALTER TABLE $column->table_name ALTER COLUMN $column->slug TYPE $column->sql_column_type USING $column->slug::$column->sql_column_type";
+                DB::statement($sql);
+            } else {
+                Schema::table($column->table_name, function (Blueprint $table) use ($column) {
+                    $table->{$column->column_type}($column->slug)->change();
+                });
+            }
         }
     }
 

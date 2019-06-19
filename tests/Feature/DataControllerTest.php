@@ -183,20 +183,20 @@ class DataControllerTest extends TestCase
             ->assertJson(['id' => $dataItem->id]);
     }
 
-    /** @test */
-    public function an_admin_can_view_a_list_the_companies()
-    {
-        $admin = factory(User::class)->state('admin')->create();
-        $layout = factory(Layout::class)->create();
+    // /** @test */
+    // public function an_admin_can_list_the_data()
+    // {
+    //     $admin = factory(User::class)->state('admin')->create();
+    //     $layout = factory(Layout::class)->create();
         
-        $layout->getDataTable()->create([]);
-        $layout->getDataTable()->create([]);
-        $layout->getDataTable()->create([]);
+    //     $layout->getDataTable()->create([]);
+    //     $layout->getDataTable()->create([]);
+    //     $layout->getDataTable()->create([]);
 
-        $this
-            ->actingAs($admin)
-            ->getJson(route('data.index', ['layout' => $layout]))
-            ->assertSuccessful()
-            ->assertJson(['total' => 3]);
-    }
+    //     $this
+    //         ->actingAs($admin)
+    //         ->getJson(route('data.index', ['layout' => $layout]))
+    //         ->assertSuccessful()
+    //         ->assertJson(['total' => 3]);
+    // }
 }

@@ -14,8 +14,8 @@ class CreateLayoutsTable extends Migration
     public function up()
     {
         Schema::create('layouts', function (Blueprint $table) {
+            $table->increments('id');
             $table->unsignedInteger('provider_id');
-            $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('table_name')->unique();

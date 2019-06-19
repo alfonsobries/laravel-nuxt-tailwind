@@ -43,26 +43,37 @@ class ColumnTableColumnsTest extends TestCase
             Column::TYPE_INTEGER => 'integer',
         ]);
 
-        $typesToCheck->each(function ($typeToCheck, $columnType) use ($typesToCheck) {
-            $typesToCheck->each(function ($typeToCheck2, $columnType2) use ($typeToCheck, $columnType) {
-                $column = factory(Column::class)->create(['type' => $columnType]);
+        $typesToCheck->each(function ($typeToCheck, $originalType) use ($typesToCheck) {
+            $casteableTo = Column::casteableTypes($typeToCheck);
+            
+            $castTo = $typesToCheck->filter(function ($type, $columnType) use ($casteableTo) {
+                return $casteableTo->contains($columnType) && $columnType !== 'float';
+            });
+
+            $castTo->each(function ($newType) use ($typeToCheck, $originalType) {
+                $column = factory(Column::class)->create(['type' => $originalType]);
 
                 $originalSlug = $column->slug;
+                $originalColumnType = Schema::getColumnType($column->table_name, $originalSlug);
 
                 $this->assertTrue(Schema::hasColumn($column->table_name, $originalSlug));
                 
-                $this->assertEquals($typeToCheck, Schema::getColumnType($column->table_name, $originalSlug));
+                $this->assertEquals($typeToCheck, $originalColumnType);
 
                 $newSlug = $originalSlug . '_2';
+                
                 $column->update([
-                    'type' => $columnType2,
+                    'type' => $newType,
                     'slug' => $newSlug
                 ]);
                 
                 $this->assertFalse(Schema::hasColumn($column->table_name, $originalSlug), "column $originalSlug still exists");
+                
                 $this->assertTrue(Schema::hasColumn($column->table_name, $newSlug), "new column $newSlug doesnt exists");
                 
-                $this->assertEquals($typeToCheck2, Schema::getColumnType($column->table_name, $newSlug), "new column $newSlug type doesnt change from $columnType to $columnType2");
+                $newColumnType = Column::columnType($newType);
+
+                $this->assertEquals($newColumnType, Schema::getColumnType($column->table_name, $newSlug), "new column $newSlug type doesnt change from $originalColumnType to $newColumnType");
             });
             
         });

@@ -10,6 +10,8 @@ use Tests\TestCase;
 
 class UserControllerTest extends TestCase
 {
+    use RefreshDatabase;
+    
     /** @test */
     public function an_admin_can_store_an_user()
     {

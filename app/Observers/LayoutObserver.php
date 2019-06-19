@@ -12,8 +12,8 @@ class LayoutObserver
     {
         $layout->table_name = $layout->generateUniqueTableName();
 
-        Schema::create($layout->table_name, function (Blueprint $table) {
-            $table->string('id')->unique()->primary();
+        Schema::create($layout->table_name, function (Blueprint $table) use ($layout) {
+            $table->string('id');
             $table->unsignedInteger('layout_id')->nullable();
             $table->unsignedInteger('created_by_id')->nullable();
             $table->unsignedInteger('updated_by_id')->nullable();
@@ -22,23 +22,27 @@ class LayoutObserver
             $table->timestamps();
             $table->softDeletes();
 
+            $foreign_prefix = $layout->generateForeignKeyPrefix();
+
             $table
-                ->foreign('layout_id')
+                ->foreign('layout_id', $foreign_prefix . '_layout_id')
                 ->references('id')
                 ->on('layouts')
                 ->onDelete('set null');
 
             $table
-                ->foreign('created_by_id')
+                ->foreign('created_by_id', $foreign_prefix . '_created_by_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('set null');
 
             $table
-                ->foreign('updated_by_id')
+                ->foreign('updated_by_id', $foreign_prefix . '_updated_by_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('set null');
+
+            $table->primary('id', $foreign_prefix . '_id_primary');
         });
     }
 

@@ -11,6 +11,8 @@ use Tests\TestCase;
 
 class CompanyControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function an_admin_can_store_a_company()
     {
@@ -78,7 +80,7 @@ class CompanyControllerTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_view_a_list_the_companies()
+    public function an_admin_can_list_the_companies()
     {
         $admin = factory(User::class)->state('admin')->create();
         factory(Company::class, 3)->create();
