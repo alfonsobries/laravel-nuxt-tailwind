@@ -89,10 +89,8 @@ class Layout extends Model
         })->toArray();
     }
 
-    // public function getDataTable()
-    // {
-    //     $table = new Data();
-    //     $table->setTable($this->table_name);
-    //     return $table;
-    // }
+    public function columnKeys()
+    {
+        return $this->belongsToMany(Column::class, 'column_layout_keys');
+    }
 }
