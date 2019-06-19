@@ -14,7 +14,7 @@ class ColumnLayoutKeyRelationshipTest extends TestCase
     public function a_layout_can_had_multiple_columns_as_key()
     {
         $layout = factory(Layout::class)->create();
-        $columns = factory(Column::class, 3)->create();
+        $columns = factory(Column::class, 3)->create(['layout_id' => $layout->id]);
 
         $layout->columnKeys()->sync($columns);
         
