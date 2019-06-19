@@ -59,7 +59,7 @@ class DataControllerTest extends TestCase
         $data = collect([
             'your_name' => $this->faker()->name,
             'birthday' => $this->faker()->date,
-            'your_time' => '12:30',
+            'your_time' => '12:30:00',
             'end_of_the_world' => $this->faker()->dateTime->format('Y-m-d H:i:s'),
             'money_in_your_wallet' => $this->faker()->randomFloat,
             'age' => $this->faker()->randomDigitNotNull,
@@ -123,7 +123,7 @@ class DataControllerTest extends TestCase
         $data = collect([
             'your_name' => $this->faker()->name,
             'birthday' => $this->faker()->date,
-            'your_time' => '12:30',
+            'your_time' => '12:30:00',
             'end_of_the_world' => $this->faker()->dateTime->format('Y-m-d H:i:s'),
             'money_in_your_wallet' => $this->faker()->randomFloat,
             'age' => $this->faker()->randomDigitNotNull,
@@ -134,7 +134,7 @@ class DataControllerTest extends TestCase
         $newData = collect([
             'your_name' => $this->faker()->name,
             'birthday' => $this->faker()->date,
-            'your_time' => '12:30',
+            'your_time' => '12:30:00',
             'end_of_the_world' => $this->faker()->dateTime->format('Y-m-d H:i:s'),
             'money_in_your_wallet' => $this->faker()->randomFloat,
             'age' => $this->faker()->randomDigitNotNull,
@@ -189,9 +189,9 @@ class DataControllerTest extends TestCase
         $admin = factory(User::class)->state('admin')->create();
         $layout = factory(Layout::class)->create();
         
-        $layout->getDataTable()->create(['layout_id' => $layout->id]);
-        $layout->getDataTable()->create(['layout_id' => $layout->id]);
-        $layout->getDataTable()->create(['layout_id' => $layout->id]);
+        $layout->getDataTable()->create([]);
+        $layout->getDataTable()->create([]);
+        $layout->getDataTable()->create([]);
 
         $this
             ->actingAs($admin)
