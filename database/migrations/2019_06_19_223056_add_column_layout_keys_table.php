@@ -40,6 +40,6 @@ class AddColumnLayoutKeysTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('column_layout_keys');
     }
 }
