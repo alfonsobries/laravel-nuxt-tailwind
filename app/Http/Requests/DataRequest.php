@@ -14,11 +14,9 @@ class DataRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->data) {
-            return $this->user()->can('update', $this->data);
-        }
-
-        return $this->user()->can('store', Data::class) && $this->user()->can('show', $this->layout);
+        return $this->data
+            ? $this->user()->can('update', $this->data)
+            : $this->user()->can('store', Data::class);
     }
 
     /**

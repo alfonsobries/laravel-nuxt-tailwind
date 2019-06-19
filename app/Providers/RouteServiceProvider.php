@@ -23,9 +23,15 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
+
+        Route::bind('data', function ($id, $route) {
+            $layout = \App\Models\Layout::findOrFail($route->layout);
+            if (! auth()->user()->can('show', $layout)) {
+                abort(403);
+            }
+            return $layout->getDataTable($id);
+        });
     }
 
     /**
