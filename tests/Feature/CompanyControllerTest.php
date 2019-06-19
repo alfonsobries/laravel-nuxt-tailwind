@@ -11,8 +11,6 @@ use Tests\TestCase;
 
 class CompanyControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function an_admin_can_store_a_company()
     {

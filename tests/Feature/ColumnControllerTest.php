@@ -78,19 +78,6 @@ class ColumnControllerTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_view_a_list_the_columns()
-    {
-        $admin = factory(User::class)->state('admin')->create();
-        factory(Column::class, 3)->create();
-        
-        $this
-            ->actingAs($admin)
-            ->getJson(route('columns.index'))
-            ->assertSuccessful()
-            ->assertJson(['total' => 3]);
-    }
-
-    /** @test */
     public function a_guest_cannot_perform_any_action()
     {
         $columns = factory(Column::class, 3)->create();
