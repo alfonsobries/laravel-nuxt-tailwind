@@ -89,10 +89,10 @@ class Layout extends Model
         })->toArray();
     }
 
-    public function getDataTable()
-    {
-        $table = new Data();
-        $table->setTable($this->table_name);
-        return $table;
-    }
+    // public function getDataTable()
+    // {
+    //     $table = new Data();
+    //     $table->setTable($this->table_name);
+    //     return $table;
+    // }
 }

@@ -70,7 +70,9 @@ class DataControllerTest extends TestCase
             ->postJson(route('data.store', ['layout' => $layout]), $data->toArray())
             ->assertSuccessful();
 
-        $dataItem = $layout->getDataTable()->find($response->json('id'));
+        $dataItem = $layout->data()->find($response->json('id'));
+
+        $this->assertEquals($layout->id, $dataItem->layout_id);
 
         $data->each(function ($value, $attribute) use ($dataItem) {
             $this->assertEquals($value, $dataItem->{$attribute});
@@ -129,7 +131,7 @@ class DataControllerTest extends TestCase
             'age' => $this->faker()->randomDigitNotNull,
         ]);
 
-        $dataItem = $layout->getDataTable()->create($data->toArray());
+        $dataItem = $layout->data()->create($data->toArray());
 
         $newData = collect([
             'your_name' => $this->faker()->name,
@@ -145,7 +147,7 @@ class DataControllerTest extends TestCase
             ->putJson(route('data.update', ['layout' => $layout, 'data' => $dataItem]), $newData->toArray())
             ->assertSuccessful();
 
-        $dataItem = $layout->getDataTable()->find($response->json('id'));
+        $dataItem = $layout->data()->find($response->json('id'));
 
         $newData->each(function ($value, $attribute) use ($dataItem) {
             $this->assertEquals($value, $dataItem->{$attribute});
@@ -158,7 +160,7 @@ class DataControllerTest extends TestCase
         $admin = factory(User::class)->state('admin')->create();
         $layout = factory(Layout::class)->create();
 
-        $dataItem = $layout->getDataTable()->create();
+        $dataItem = $layout->data()->create();
 
         $this
             ->actingAs($admin)
@@ -174,7 +176,7 @@ class DataControllerTest extends TestCase
         $admin = factory(User::class)->state('admin')->create();
         $layout = factory(Layout::class)->create();
 
-        $dataItem = $layout->getDataTable()->create();
+        $dataItem = $layout->data()->create();
 
         $this
             ->actingAs($admin)
@@ -183,20 +185,20 @@ class DataControllerTest extends TestCase
             ->assertJson(['id' => $dataItem->id]);
     }
 
-    // /** @test */
-    // public function an_admin_can_list_the_data()
-    // {
-    //     $admin = factory(User::class)->state('admin')->create();
-    //     $layout = factory(Layout::class)->create();
+    /** @test */
+    public function an_admin_can_list_the_data()
+    {
+        $admin = factory(User::class)->state('admin')->create();
+        $layout = factory(Layout::class)->create();
         
-    //     $layout->getDataTable()->create([]);
-    //     $layout->getDataTable()->create([]);
-    //     $layout->getDataTable()->create([]);
+        $layout->data()->create([]);
+        $layout->data()->create([]);
+        $layout->data()->create([]);
 
-    //     $this
-    //         ->actingAs($admin)
-    //         ->getJson(route('data.index', ['layout' => $layout]))
-    //         ->assertSuccessful()
-    //         ->assertJson(['total' => 3]);
-    // }
+        $this
+            ->actingAs($admin)
+            ->getJson(route('data.index', ['layout' => $layout]))
+            ->assertSuccessful()
+            ->assertJson(['total' => 3]);
+    }
 }
