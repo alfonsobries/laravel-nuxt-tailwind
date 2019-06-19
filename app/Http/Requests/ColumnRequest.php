@@ -36,6 +36,7 @@ class ColumnRequest extends FormRequest
                 'required' => 'nullable|boolean',
                 'published' => 'nullable|boolean',
                 'settings' => 'nullable|array',
+                'rules' => 'nullable|array',
             ];
         }
 
@@ -49,6 +50,7 @@ class ColumnRequest extends FormRequest
             'required' => 'nullable|boolean',
             'published' => 'nullable|boolean',
             'settings' => 'nullable|array',
+            'rules' => 'nullable|array',
         ];
     }
 }

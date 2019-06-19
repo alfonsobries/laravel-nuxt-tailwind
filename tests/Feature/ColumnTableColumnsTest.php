@@ -18,8 +18,10 @@ class ColumnTableColumnsTest extends TestCase
             Column::TYPE_DATE => 'date',
             Column::TYPE_DATETIME => 'datetime',
             Column::TYPE_TIME => 'time',
-            Column::TYPE_FLOAT => 'float',
-            Column::TYPE_INTEGER => 'integer',
+            // Column::TYPE_FLOAT => 'float',
+            // Column::TYPE_INTEGER => 'integer',
+            Column::TYPE_FLOAT => 'string',
+            Column::TYPE_INTEGER => 'string',
         ]);
 
         $typesToCheck->each(function ($typeToCheck, $columnType) {
@@ -39,15 +41,17 @@ class ColumnTableColumnsTest extends TestCase
             Column::TYPE_DATE => 'date',
             Column::TYPE_DATETIME => 'datetime',
             Column::TYPE_TIME => 'time',
-            Column::TYPE_FLOAT => 'float',
-            Column::TYPE_INTEGER => 'integer',
+            // Column::TYPE_FLOAT => 'float',
+            // Column::TYPE_INTEGER => 'integer',
+            Column::TYPE_FLOAT => 'string',
+            Column::TYPE_INTEGER => 'string',
         ]);
 
         $typesToCheck->each(function ($typeToCheck, $originalType) use ($typesToCheck) {
             $casteableTo = Column::casteableTypes($typeToCheck);
             
             $castTo = $typesToCheck->filter(function ($type, $columnType) use ($casteableTo) {
-                return $casteableTo->contains($columnType) && $columnType !== 'float';
+                return $casteableTo->contains($columnType);
             });
 
             $castTo->each(function ($newType) use ($typeToCheck, $originalType) {

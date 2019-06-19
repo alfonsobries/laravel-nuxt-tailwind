@@ -23,7 +23,7 @@ class CreateColumnsTable extends Migration
             $table->string('default')->nullable();
             $table->string('when_duplicated')->default(Column::ACTION_REPLACE);
             $table->json('settings')->nullable();
-            $table->boolean('required')->default(false);
+            $table->json('rules')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

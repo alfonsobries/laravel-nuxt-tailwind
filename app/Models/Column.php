@@ -37,6 +37,7 @@ class Column extends Model
         'default',
         'when_duplicated',
         'settings',
+        'rules',
         'required',
         'published',
     ];
@@ -44,6 +45,7 @@ class Column extends Model
     protected $casts = [
         'required' => 'boolean',
         'settings' => 'array',
+        'rules' => 'array',
     ];
 
     /**
@@ -116,12 +118,12 @@ class Column extends Model
 
             case self::TYPE_TIME:
                 return 'time';
-            
-            case self::TYPE_FLOAT:
-                return 'float';
 
-            case self::TYPE_INTEGER:
-                return 'integer';
+            // case self::TYPE_FLOAT:
+            //     return 'float';
+
+            // case self::TYPE_INTEGER:
+            //     return 'integer';
         }
 
         return $sql ? 'varchar' : 'string';
@@ -169,11 +171,7 @@ class Column extends Model
 
     public function rules()
     {
-        $rules = [];
-
-        if ($this->required) {
-            $rules[] = 'required';
-        }
+        $rules = is_array($this->rules) ? $this->rules : [];
 
         switch ($this->type) {
             case self::TYPE_DATE:

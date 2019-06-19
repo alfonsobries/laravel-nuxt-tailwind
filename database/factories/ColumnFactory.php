@@ -15,7 +15,6 @@ $factory->define(Column::class, function (Faker $faker) {
         'slug' => str_slug($faker->sentence(2), '_'),
         'type' => Column::typeOptions()->random(),
         'when_duplicated' => Column::actionOptions()->random(),
-        'required' => $faker->boolean,
         'published_at' => $faker->optional()->dateTime,
     ];
 });
@@ -27,5 +26,5 @@ $factory->state(Column::class, 'published', function ($faker) {
 });
 
 $factory->state(Column::class, 'required', [
-    'required' => true,
+    'rules' => ['required'],
 ]);
