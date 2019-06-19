@@ -140,15 +140,63 @@ class DataControllerTest extends TestCase
             'age' => $this->faker()->randomDigitNotNull,
         ]);
 
-        $this
+        $response = $this
             ->actingAs($admin)
             ->putJson(route('data.update', ['layout' => $layout, 'data' => $dataItem]), $newData->toArray())
             ->assertSuccessful();
 
-        $dataItem->refresh();
+        $dataItem = $layout->getDataTable()->find($response->json('id'));
 
-        $data->each(function ($value, $attribute) use ($dataItem) {
+        $newData->each(function ($value, $attribute) use ($dataItem) {
             $this->assertEquals($value, $dataItem->{$attribute});
         });
+    }
+
+    /** @test */
+    public function an_admin_can_delete_a_single_data_item()
+    {
+        $admin = factory(User::class)->state('admin')->create();
+        $layout = factory(Layout::class)->create();
+
+        $dataItem = $layout->getDataTable()->create();
+
+        $this
+            ->actingAs($admin)
+            ->deleteJson(route('data.destroy', ['layout' => $layout, 'data' => $dataItem]))
+            ->assertSuccessful();
+
+        $this->assertTrue($dataItem->fresh()->trashed());
+    }
+
+    /** @test */
+    public function an_admin_can_view_a_single_data_item()
+    {
+        $admin = factory(User::class)->state('admin')->create();
+        $layout = factory(Layout::class)->create();
+
+        $dataItem = $layout->getDataTable()->create();
+
+        $this
+            ->actingAs($admin)
+            ->getJson(route('data.show', ['layout' => $layout, 'data' => $dataItem]))
+            ->assertSuccessful()
+            ->assertJson(['id' => $dataItem->id]);
+    }
+
+    /** @test */
+    public function an_admin_can_view_a_list_the_companies()
+    {
+        $admin = factory(User::class)->state('admin')->create();
+        $layout = factory(Layout::class)->create();
+        
+        $layout->getDataTable()->create(['layout_id' => $layout->id]);
+        $layout->getDataTable()->create(['layout_id' => $layout->id]);
+        $layout->getDataTable()->create(['layout_id' => $layout->id]);
+
+        $this
+            ->actingAs($admin)
+            ->getJson(route('data.index', ['layout' => $layout]))
+            ->assertSuccessful()
+            ->assertJson(['total' => 3]);
     }
 }

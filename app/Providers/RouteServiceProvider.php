@@ -30,7 +30,7 @@ class RouteServiceProvider extends ServiceProvider
             if (! auth()->user()->can('show', $layout)) {
                 abort(403);
             }
-            return $layout->getDataTable($id);
+            return $layout->getDataTable()->findOrFail($id);
         });
     }
 

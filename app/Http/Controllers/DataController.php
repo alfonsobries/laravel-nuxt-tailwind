@@ -18,7 +18,7 @@ class DataController extends Controller
      */
     public function index(Request $request, Layout $layout)
     {
-        return Data::paginate($request->input('per_page', 20));
+        return $layout->data()->paginate($request->input('per_page', 20));
     }
 
     /**

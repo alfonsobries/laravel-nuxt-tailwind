@@ -18,4 +18,15 @@ class DataObserver
     {
         $data->id = $data->buildId();
     }
+
+    /**
+     * Handle the column "updating" event.
+     *
+     * @param  \App\Models\Data  $data
+     * @return void
+     */
+    public function updating(Data $data)
+    {
+        $data->id = $data->buildId();
+    }
 }
