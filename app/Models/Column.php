@@ -127,4 +127,37 @@ class Column extends Model
         return $this->layout->table_name;
     }
 
+    public function rules()
+    {
+        $rules = [];
+
+        if ($this->required) {
+            $rules[] = 'required';
+        }
+
+        switch ($this->type) {
+            case self::TYPE_DATE:
+            case self::TYPE_DATETIME:
+                $rules[] = 'date';
+                break;
+
+            case self::TYPE_TIME:
+                $rules[] = 'string'; // @TODO custom validator
+                break;
+
+            case self::TYPE_FLOAT:
+                $rules[] = 'numeric';
+                break;
+
+            case self::TYPE_INTEGER:
+                $rules[] = 'integer';
+                break;
+
+            default:
+                $rules[] = 'string'; // @TODO custom validator
+                break;
+        }
+
+        return $rules;
+    }
 }

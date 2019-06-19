@@ -17,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
     {
         \App\Models\Layout::observe(\App\Observers\LayoutObserver::class);
         \App\Models\Column::observe(\App\Observers\ColumnObserver::class);
+        \App\Models\Data::observe(\App\Observers\DataObserver::class);
 
         if ($this->app->runningUnitTests()) {
             Schema::defaultStringLength(191);

@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Data;
 use App\Traits\BelongsToProvider;
+use App\Traits\HasManyColumns;
+use App\Traits\HasManyData;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
@@ -13,7 +16,9 @@ class Layout extends Model
 {
     use SoftDeletes,
         HasSlug,
-        BelongsToProvider;
+        BelongsToProvider,
+        HasManyColumns,
+        HasManyData;
 
     protected $fillable = [
         'provider_id',
@@ -64,5 +69,19 @@ class Layout extends Model
         } while ($this->where('table_name', $tableName)->exists());
         
         return $tableName;
+    }
+
+    public function rules()
+    {
+        return $this->columns()->get()->mapWithKeys(function ($column) {
+            return [$column->slug => $column->rules()];
+        })->toArray();
+    }
+
+    public function getDataTable()
+    {
+        $table = new Data();
+        $table->setTable($this->table_name);
+        return $table;
     }
 }
