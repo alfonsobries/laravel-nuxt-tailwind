@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnLayoutKeysTable extends Migration
+class CreateColumnRelationshipsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,23 +13,23 @@ class AddColumnLayoutKeysTable extends Migration
      */
     public function up()
     {
-        Schema::create('column_layout_key', function (Blueprint $table) {
-            $table->unsignedInteger('layout_id');
-            $table->unsignedInteger('column_id');
+        Schema::create('column_relationship', function (Blueprint $table) {
+            $table->unsignedInteger('foreign_column_id');
+            $table->unsignedInteger('related_column_id');
 
             $table
-                ->foreign('layout_id')
-                ->references('id')
-                ->on('layouts')
-                ->onDelete('cascade');
-
-            $table
-                ->foreign('column_id')
+                ->foreign('foreign_column_id')
                 ->references('id')
                 ->on('columns')
                 ->onDelete('cascade');
 
-            $table->index(['layout_id', 'column_id']);
+            $table
+                ->foreign('related_column_id')
+                ->references('id')
+                ->on('columns')
+                ->onDelete('cascade');
+
+            $table->index(['foreign_column_id', 'related_column_id']);
         });
     }
 
@@ -40,6 +40,6 @@ class AddColumnLayoutKeysTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('column_layout_keys');
+        Schema::dropIfExists('column_relationships');
     }
 }

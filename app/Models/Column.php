@@ -198,4 +198,9 @@ class Column extends Model
 
         return $rules;
     }
+
+    public function relationships()
+    {
+        return $this->belongsToMany(Column::class, 'column_relationship', 'foreign_column_id', 'related_column_id');
+    }
 }

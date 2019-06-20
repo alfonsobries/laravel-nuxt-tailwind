@@ -91,6 +91,6 @@ class Layout extends Model
 
     public function columnKeys()
     {
-        return $this->belongsToMany(Column::class, 'column_layout_keys');
+        return $this->belongsToMany(Column::class, 'column_layout_key');
     }
 }
