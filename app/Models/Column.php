@@ -60,6 +60,7 @@ class Column extends Model
             ->saveSlugsTo('slug')
             ->slugsShouldBeNoLongerThan(60)
             ->allowDuplicateSlugs()
+            ->doNotGenerateSlugsOnUpdate()
             ->usingSeparator('_');
     }
 

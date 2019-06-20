@@ -22,20 +22,7 @@ class ColumnObserver
         });
 
         if ($column->reference_column_id) {
-            $referencedColumn = $column->reference;
-            
-            Schema::table($referencedColumn->table_name, function (Blueprint $table) use ($referencedColumn) {
-                $table->unique($referencedColumn->slug);
-            });
-
-            Schema::table($column->table_name, function (Blueprint $table) use ($column, $referencedColumn) {
-                $table
-                    ->foreign($column->slug, sprintf('%s_%s_key', $column->slug, $referencedColumn->slug))
-                    ->references($referencedColumn->slug)
-                    ->on($referencedColumn->table_name)
-                    ->onDelete('set null')
-                    ->onUpdate('set null');
-            });
+            $this->createRelationship($column);
         }
     }
 
@@ -63,6 +50,20 @@ class ColumnObserver
                 });
             }
         }
+
+        if ($column->reference_column_id !== $column->getOriginal('reference_column_id')) {
+            // Is new
+            if (!$column->getOriginal('reference_column_id')) {
+                $this->createRelationship($column, $column->reference_column_id);
+            // Was removed
+            } else if (!$column->reference_column_id) {
+                $this->deleteRelationship($column, $column->getOriginal('reference_column_id'));
+            // Was updated
+            } else if ($column->getOriginal('reference_column_id') !== $column->reference_column_id) {
+                $this->deleteRelationship($column, $column->getOriginal('reference_column_id'));
+                $this->createRelationship($column, $column->reference_column_id);
+            }
+        }
     }
 
     /**
@@ -75,6 +76,39 @@ class ColumnObserver
     {
         Schema::table($column->table_name, function (Blueprint $table) use ($column) {
             $table->dropColumn($column->slug);
+        });
+    }
+
+    private function createRelationship($column, $reference_column_id = null)
+    {
+        $referencedColumn = $reference_column_id ? Column::find($reference_column_id) : $column->reference;
+
+        // Force the user to manually set the unique key?
+        Schema::table($referencedColumn->table_name, function (Blueprint $table) use ($referencedColumn) {
+            $table->unique($referencedColumn->slug, $referencedColumn->slug . '_unique');
+        });
+
+        Schema::table($column->table_name, function (Blueprint $table) use ($column, $referencedColumn) {
+            $table
+                ->foreign($column->slug, sprintf('%s_%s_key', $column->slug, $referencedColumn->slug))
+                ->references($referencedColumn->slug)
+                ->on($referencedColumn->table_name)
+                ->onDelete('set null')
+                ->onUpdate('set null');
+        });
+    }
+
+    private function deleteRelationship($column, $reference_column_id = null)
+    {
+        $referencedColumn = $reference_column_id ? Column::find($reference_column_id) : $column->reference;
+
+        Schema::table($column->table_name, function (Blueprint $table) use ($column, $referencedColumn) {
+            $table->dropForeign(sprintf('%s_%s_key', $column->slug, $referencedColumn->slug));
+        });
+        
+        // Force the user to manually set the unique key?
+        Schema::table($referencedColumn->table_name, function (Blueprint $table) use ($referencedColumn) {
+            $table->dropUnique($referencedColumn->slug . '_unique');
         });
     }
 }
