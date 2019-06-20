@@ -20,6 +20,23 @@ class ColumnObserver
         Schema::table($column->table_name, function (Blueprint $table) use ($column) {
             $table->{$column->column_type}($column->slug)->nullable()->default($column->default);
         });
+
+        if ($column->reference_column_id) {
+            $referencedColumn = $column->reference;
+            
+            Schema::table($referencedColumn->table_name, function (Blueprint $table) use ($referencedColumn) {
+                $table->unique($referencedColumn->slug);
+            });
+
+            Schema::table($column->table_name, function (Blueprint $table) use ($column, $referencedColumn) {
+                $table
+                    ->foreign($column->slug, sprintf('%s_%s_key', $column->slug, $referencedColumn->slug))
+                    ->references($referencedColumn->slug)
+                    ->on($referencedColumn->table_name)
+                    ->onDelete('set null')
+                    ->onUpdate('set null');
+            });
+        }
     }
 
     /**

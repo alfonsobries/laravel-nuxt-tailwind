@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Column;
+use App\Pivots\ColumnRelationship;
 use App\Traits\BelongsToLayout;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -201,6 +203,19 @@ class Column extends Model
 
     public function relationships()
     {
-        return $this->belongsToMany(Column::class, 'column_relationship', 'foreign_column_id', 'related_column_id');
+        return $this->belongsToMany(Column::class, 'column_relationship', 'foreign_column_id', 'related_column_id')
+            ->using(ColumnRelationship::class);
     }
+
+    public function setReferenceAttribute(Column $column = null)
+    {
+        $this->reference_column_id = $column ? $column->id : null;
+        $this->save();
+    }
+
+    public function reference()
+    {
+        return $this->belongsTo(Column::class, 'reference_column_id');
+    }
+    
 }

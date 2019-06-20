@@ -17,6 +17,7 @@ class CreateColumnsTable extends Migration
         Schema::create('columns', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('layout_id');
+            $table->unsignedInteger('reference_column_id')->nullable();
             $table->string('name');
             $table->string('slug');
             $table->string('type')->default(Column::TYPE_TEXT);
