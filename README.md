@@ -11,9 +11,9 @@ Inspired in `cretueusebiu/laravel-nuxt`
 
 ## Features
 
-- Laravel 5.8
+- Laravel 6
 - Authentication with JWT
-- Nuxt 2.8
+- Nuxt 2.10
 - TailwindCSS
 - VueTailwind Components
 - VueI18n
