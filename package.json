@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@nuxtjs/router": "^1.5.0",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "dotenv": "^6.2.0",
     "jquery": "^3.4.1",
     "js-cookie": "^2.2.1",
